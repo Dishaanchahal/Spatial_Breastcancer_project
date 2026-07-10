@@ -1,27 +1,27 @@
 # Option 3 (validate): independent deconvolution with RCTD (spacexr).
-# Reads raw counts/coords straight from the 10x flat files (no Seurat dependency),
-# so it is robust to the incomplete Seurat R library on this system.
+# Reads raw counts/coords straight from 10x flat files (no Seurat dependency).
 suppressPackageStartupMessages({ library(spacexr); library(Matrix) })
 source("00_config.R")
 OUT <- file.path(PROJECT_ROOT, "Validation_RCTD"); dir.create(OUT, showWarnings = FALSE, recursive = TRUE)
 set.seed(0)
 
-open_maybe_gz <- function(path) {
-  con <- file(path, "rb"); magic <- readBin(con, "raw", 2); close(con)
-  if (identical(as.integer(magic), c(31L, 139L))) gzfile(path) else file(path)
+is_gz <- function(path) { con <- file(path, "rb"); m <- readBin(con, "raw", 2); close(con); identical(as.integer(m), c(31L, 139L)) }
+gunzip_tmp <- function(path) {
+  tmp <- tempfile(); inp <- gzfile(path, "rb"); out <- file(tmp, "wb")
+  repeat { b <- readBin(inp, "raw", 1e7); if (length(b) == 0) break; writeBin(b, out) }
+  close(inp); close(out); tmp
 }
-read_lines2 <- function(path) { con <- open_maybe_gz(path); on.exit(close(con)); readLines(con) }
-read_mtx2   <- function(path) { con <- open_maybe_gz(path); on.exit(close(con)); as(Matrix::readMM(con), "CsparseMatrix") }
+read_lines2 <- function(path) { p <- if (is_gz(path)) gunzip_tmp(path) else path; readLines(p) }
+read_mtx2   <- function(path) { p <- if (is_gz(path)) gunzip_tmp(path) else path; as(Matrix::readMM(p), "CsparseMatrix") }
 load_counts <- function(dir) {
   bc <- read_lines2(file.path(dir, "barcodes.tsv.gz"))
   ft <- read_lines2(file.path(dir, "features.tsv.gz")); genes <- sub("\t.*", "", ft)
-  m  <- read_mtx2(file.path(dir, "matrix.mtx.gz"))          # 10x = genes x cells
+  m  <- read_mtx2(file.path(dir, "matrix.mtx.gz"))
   if (nrow(m) == length(bc) && ncol(m) == length(genes)) m <- t(m)
   rownames(m) <- make.unique(genes); colnames(m) <- bc
   round(m)
 }
 
-# ---- reference (subsample <=2500 / celltype_major) ----
 ref_counts <- load_counts(DIR_REF)
 meta   <- read.csv(file.path(DIR_REF, "metadata.csv"), row.names = 1)
 common <- intersect(colnames(ref_counts), rownames(meta))
@@ -33,14 +33,13 @@ nUMI_ref <- colSums(ref_counts); names(nUMI_ref) <- colnames(ref_counts)
 reference <- Reference(ref_counts, cell_types, nUMI_ref)
 message("reference: ", ncol(ref_counts), " cells x ", nrow(ref_counts), " genes")
 
-# ---- per-sample RCTD ----
 comp <- list()
 for (id in SAMPLES) {
   message("=== RCTD | ", id, " ===")
   counts <- load_counts(file.path(DIR_SAMPLES, id, "filtered_feature_bc_matrix"))
   pos <- read.csv(file.path(DIR_SAMPLES, id, "spatial", "tissue_positions_list.csv"), header = FALSE)
   rownames(pos) <- pos[, 1]
-  coords <- pos[colnames(counts), c(6, 5)]; colnames(coords) <- c("x", "y")   # pxl_col, pxl_row
+  coords <- pos[colnames(counts), c(6, 5)]; colnames(coords) <- c("x", "y")
   ok <- complete.cases(coords); counts <- counts[, ok]; coords <- coords[ok, ]
   nUMI <- colSums(counts); keep <- nUMI > 0
   counts <- counts[, keep]; coords <- coords[keep, ]; nUMI <- nUMI[keep]
