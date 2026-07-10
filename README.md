@@ -1,0 +1,103 @@
+# Spatial Transcriptomics of Breast Cancer (Visium + Wu et al. 2021 reference)
+
+Cell-type deconvolution of six 10x Visium breast-cancer slides by label transfer
+from the Wu et al. 2021 scRNA-seq atlas (GSE176078), validated against
+pathologist H&E annotations and summarized as tumor-microenvironment (TME)
+composition per clinical subtype.
+
+## Samples
+
+| # | Sample ID | Subtype | PCA dims | Cluster res | Notes |
+|---|-----------|---------|----------|-------------|-------|
+| 1 | 1142243F  | TNBC | 30 | 0.8 | — |
+| 2 | 1160920F  | TNBC | 30 | 0.8 | empty cluster 8 removed |
+| 3 | CID4290   | ER+  | 20 | 0.6 | — |
+| 4 | CID4465   | TNBC | 20 | 0.5 | — |
+| 5 | CID44971  | TNBC | 20 | 0.5 | — |
+| 6 | CID4535   | ER+  | 20 | 0.5 | — |
+
+Reference cell types (`celltype_major`): Cancer Epithelial, T-cells, Myeloid,
+CAFs, Endothelial, B-cells, Plasmablasts, PVL, Normal Epithelial.
+
+## Pipeline
+
+Run in order; each script sources `00_config.R` for all paths and parameters.
+
+| Script | Step | Input | Output |
+|--------|------|-------|--------|
+| `00_config.R` | shared config (paths, sample list, per-sample params) | — | — |
+| `01_process_spatial.R` | QC → SCTransform → cluster → spatially variable features | `samples/<ID>/` | `Processed_objects_step1/sample_<i>/visium_sample<i>.rds` |
+| `02_process_reference.R` | build SCT-normalized scRNA-seq reference | `Wu_etal_2021_BRCA_scRNASeq/` | `ref_processed.rds` |
+| `03_label_transfer.R` | FindTransferAnchors + TransferData | processed `.rds` + reference | `Label_transfer/sample<i>_<ID>_labeled.rds` |
+| `04_label_transfer_plots.R` | spatial plots of 9 cell-type scores | labeled `.rds` | `Label_transfer/label_transfer_s<i>.png` |
+| `05_pathologist_annotations.R` | overlay pathologist `Classification` | labeled `.rds` + `metadata/` | `Pathologists_annotations/…png` |
+| `06_validate_annotations.R` | mean prediction score per pathologist class (heatmaps) | labeled `.rds` + `metadata/` | `Validating/validation_heatmap_s<i>.png` |
+| `07_tme_comparison.R` | TME composition, computed from objects | labeled `.rds` | `TME_comparison/tme_comparison*.png` + `tme_summary_computed.csv` |
+| `03b_deconvolution_rctd.R` | **proper** spot deconvolution (RCTD) — see notes | processed `.rds` + reference | `Deconvolution_RCTD/weights_<ID>.csv` |
+
+## Running on Explorer
+
+```bash
+cd /scratch/chahal.d/Spatial_GenAI
+sbatch run_pipeline.sh          # full pipeline as a SLURM job
+# or a single step:
+module load R/4.4.1
+Rscript 07_tme_comparison.R
+```
+
+R packages required: `Seurat`, `ggplot2`, `patchwork`, `dplyr`, `reshape2`,
+`pheatmap`, `scales`, `RColorBrewer`.
+
+## What changed vs. the original scripts
+
+The original exploratory scripts are preserved unchanged in
+`_original_scripts/`. This refactor fixes the reproducibility issues:
+
+1. **Consistent paths.** All I/O goes through `00_config.R`. The original scripts
+   saved step-1 output to the working directory but read it from
+   `Processed_objects_spatial/…` — paths that did not match the real folders.
+2. **Renamed folder.** `Processed_objects_spatial--- step1` (spaces + dashes)
+   → `Processed_objects_step1`.
+3. **De-duplicated step 1.** Six copy-pasted sample blocks → one loop over
+   `SAMPLES`/`PARAMS`; each sample's original tuning is preserved.
+4. **Robust cluster removal.** Idents-based subsetting replaces the fragile
+   `seurat_clusters != 8` factor comparison (the "cluster 8 removal failed" note).
+5. **Self-contained validation.** `06_validate_annotations.R` loads its own
+   objects/metadata instead of relying on variables left in the session.
+6. **TME computed, not hardcoded.** `07_tme_comparison.R` derives the per-sample
+   cell-type proportions from the labeled objects (was a typed-in table).
+7. **Spot QC added.** Step 1 now computes mitochondrial % and filters spots
+   (min genes/counts, max mito %) uniformly, and regresses mito in SCTransform.
+   The original did no spot QC.
+
+## Methodological notes (literature-validated)
+
+- **Deconvolution vs. label transfer.** Visium spots (55 um) are multicellular,
+  so each spot is a *mixture* of cell types. Seurat anchor label transfer
+  (`TransferData`) produces per-spot prediction *scores* — a useful quick view,
+  but independent benchmarks show dedicated deconvolution methods
+  (cell2location, RCTD, CARD, SpatialDWLS/Tangram) are the appropriate tools for
+  estimating spot composition, consistently topping accuracy benchmarks across
+  many datasets (Li et al. 2022, *Nat Methods*; Li et al. 2023, *Nat Commun*;
+  Sang-aram et al. 2024, *eLife*). `03b_deconvolution_rctd.R` adds RCTD as the
+  corrected composition estimate; treat the step-7 TME figure as an
+  approximation until RCTD weights are available.
+- **Biological plausibility.** The subtype contrast in the data — ER+ samples
+  dominated by cancer epithelium with sparse immune content, TNBC samples more
+  immune/stroma-infiltrated (T-cells, CAFs) — is consistent with reports that
+  TNBC carries higher immune infiltration (CD8+ T cells alongside
+  immunosuppressive Tregs/M2 macrophages) and stromal remodeling than
+  hormone-receptor-positive breast cancer.
+
+## Suggested next steps
+
+1. Install `spacexr` and run `03b_deconvolution_rctd.R`; rebuild the TME
+   comparison from RCTD weights for a defensible composition estimate.
+2. Add statistics to the TME contrast (per-cell-type proportions, TNBC vs ER+)
+   rather than eyeballing stacked bars — with n=4 vs 2 this is descriptive only,
+   so state that explicitly.
+3. Spatial neighborhood / colocalization analysis (e.g. are T-cells adjacent to
+   tumor epithelium vs excluded?) to address immune exclusion, the key
+   subtype-distinguishing feature in the TNBC TME literature.
+4. Harmonize QC/clustering parameters across samples (or justify per-sample
+   choices) and record package versions (`sessionInfo()` / renv lockfile).

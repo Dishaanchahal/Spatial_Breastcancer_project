@@ -1,0 +1,29 @@
+# ============================================================
+# Data — NOT committed. Source: GEO GSE176078 (Wu et al. 2021)
+# ============================================================
+samples/
+spatial/
+Processed_objects_step1/
+logs/
+cell2location/c2l_env/
+cell2location/data/
+cell2location/logs/
+cell2location/results/
+
+# data / large binary file types anywhere
+*.rds
+*.h5ad
+*.tar
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.mtx
+*.mtx.gz
+*.tsv.gz
+*.csv
+
+# misc
+.DS_Store
+__pycache__/
+*.pyc
