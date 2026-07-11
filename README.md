@@ -101,3 +101,17 @@ The original exploratory scripts are preserved unchanged in
    subtype-distinguishing feature in the TNBC TME literature.
 4. Harmonize QC/clustering parameters across samples (or justify per-sample
    choices) and record package versions (`sessionInfo()` / renv lockfile).
+
+## RCTD cross-validation (Option 3)
+
+An independent deconvolution with RCTD (`spacexr`) was run as a method cross-check
+(`08_rctd_validation.R` → `09_compare_c2l_rctd.R` → `cell2location/09b_plot_concordance.py`).
+
+- Per-sample composition from **cell2location and RCTD agree strongly: Pearson r = 0.93**.
+- Systematic differences: RCTD assigns **more Cancer Epithelial and CAFs**, cell2location
+  assigns **more Normal Epithelial** — consistent with the earlier caveat that cell2location
+  may over-call "Normal Epithelial" within tumor regions (RCTD reallocates it to Cancer Epithelial).
+- Subtype-level conclusions hold under **both** methods: ER+ tumor-dominated/immune-cold;
+  TNBC more CAF/immune-infiltrated (CID4465 the most stroma/immune-rich).
+
+See `Validation_RCTD/c2l_vs_rctd_scatter.png` and `Validation_RCTD/rctd_composition.csv`.
