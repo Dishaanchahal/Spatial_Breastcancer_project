@@ -131,3 +131,31 @@ Key findings (see `CellComm/liana_dotplot_structural_to_immune.png`,
   PVL, and epithelium to T-cells.
 - **ECM signaling**: COL1A1/COL1A2 → CD44 and VIM → CD44 from CAFs/stroma to immune cells.
 - **B-lineage support**: TNFSF13B (BAFF) → Plasmablasts/T-cells from CAFs and epithelium.
+
+## Tissue architecture — spatial niches + TLS (Option: architecture)
+
+Spatial niches were derived by clustering neighborhood-aggregated cell2location
+composition (k-NN, k=15; KMeans, 8 niches) — the cellular-neighborhood approach
+(Goltsev 2018; Schürch 2020; Janesick 2023) implemented with Squidpy-style logic (Palla 2022).
+Script: `TissueArchitecture/11_tissue_architecture.py`.
+
+- A **lymphoid niche** (niche 4: B-cell + T-cell rich) was identified whose location
+  coincides with peaks of the **Cabrita 2020** 9-gene **TLS signature** — a putative
+  tertiary lymphoid structure, most prominent in **CID4465 (TNBC)**. Two independent
+  methods (composition niche + TLS gene signature) agree on its location.
+- **Immune exclusion** (`immune_exclusion_and_cxcl12_cxcr4.csv`): T-cells co-localize with
+  **CAFs in every sample** (Spearman 0.25–0.71); the spatial CXCL12(neighborhood)→CXCR4
+  coupling is modest-positive, consistent with the LIANA CAF→T/B recruitment axis.
+
+## Pathway activity — PROGENy (Option: pathway)
+
+PROGENy pathway activity (MLM) via decoupleR — `TissueArchitecture/12_pathway_activity.py`
+(Schubert 2018; Badia-i-Mompel 2022).
+
+- **By niche:** JAK-STAT is highest in the **lymphoid/TLS niche** (interferon/cytokine);
+  TGFβ is highest in the **CAF-rich tumor-stroma niche** (fibrosis) — pathway activity maps
+  cleanly onto tissue architecture.
+- **By subtype:** TNBC shows higher **JAK-STAT** than ER+, consistent with a more inflamed TME.
+  Descriptive only (n = 4 TNBC vs 2 ER+).
+
+All method and biology citations are in **REFERENCES.md**.
