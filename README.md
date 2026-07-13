@@ -115,3 +115,19 @@ An independent deconvolution with RCTD (`spacexr`) was run as a method cross-che
   TNBC more CAF/immune-infiltrated (CID4465 the most stroma/immune-rich).
 
 See `Validation_RCTD/c2l_vs_rctd_scatter.png` and `Validation_RCTD/rctd_composition.csv`.
+
+## Cell–cell communication (Option 2)
+
+Ligand–receptor communication among the 9 major cell types was inferred with
+**LIANA** (consensus rank-aggregate) on the scRNA-seq reference
+(`CellComm/10_cell_communication.py`). 15,616 interactions ranked.
+
+Key findings (see `CellComm/liana_dotplot_structural_to_immune.png`,
+`CellComm/liana_key_chemokines.csv`):
+- **CXCL12 → CXCR4** (stroma/endothelium/myeloid → T- and B-cells) is prominent and,
+  for **CAFs → T/B cells, highly specific** — the canonical immune recruitment/retention
+  axis, matching the CAF-immune interplay seen in the CAF-high TNBC sample (CID4465).
+- **Antigen presentation**: MHC-II → CD4 (HLA-DP/DR → CD4) and MHC-I → CD8A from CAFs,
+  PVL, and epithelium to T-cells.
+- **ECM signaling**: COL1A1/COL1A2 → CD44 and VIM → CD44 from CAFs/stroma to immune cells.
+- **B-lineage support**: TNFSF13B (BAFF) → Plasmablasts/T-cells from CAFs and epithelium.
