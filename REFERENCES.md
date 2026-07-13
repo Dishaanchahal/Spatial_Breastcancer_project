@@ -44,3 +44,6 @@ Methods and biological references underpinning the analyses in this repository.
 ## Clinical context (TILs / immunotherapy)
 - Wood SJ, et al. High tumor infiltrating lymphocytes are associated with pathological complete response in TNBC treated with neoadjuvant KEYNOTE-522 chemoimmunotherapy. *Breast Cancer Research and Treatment* 2024.
 - Barroso-Sousa R, et al. Prediction of pathologic complete response to chemoimmunotherapy in TNBC using tumor-infiltrating lymphocytes. *Journal of Clinical Oncology* 2024.
+
+## External validation dataset
+- 10x Genomics. Human Breast Cancer (Block A, Sections 1–2), Visium Spatial Gene Expression, v1.1.0 (invasive ductal carcinoma). https://www.10xgenomics.com/resources/datasets/human-breast-cancer-block-a-section-1-1-standard-1-1-0

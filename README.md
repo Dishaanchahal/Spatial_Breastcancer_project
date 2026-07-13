@@ -159,3 +159,22 @@ PROGENy pathway activity (MLM) via decoupleR — `TissueArchitecture/12_pathway_
   Descriptive only (n = 4 TNBC vs 2 ER+).
 
 All method and biology citations are in **REFERENCES.md**.
+
+## External cross-validation (independent 10x dataset)
+
+The pipeline was applied to an **independent** 10x Visium breast-cancer dataset
+(Block A, Sections 1–2; invasive ductal carcinoma; 3,798 + 3,987 spots; 18,036 genes
+shared with our reference), **reusing our reference signatures without retraining**.
+Scripts: `ExternalValidation/` (`xval_c2l.py`, `xval_downstream.py`).
+
+- **Composition reproduces:** same 9-cell-type repertoire, tumor-dominated
+  (Cancer Epithelial ~0.55), and the two adjacent sections are near-identical
+  (internal consistency).
+- **Pathway structure reproduces:** JAK-STAT strongly active (~12), and the full
+  PROGENy directional signature matches our cohort (positive JAK-STAT/Hypoxia/TGFβ/TNFα;
+  negative p53/PI3K/MAPK/Estrogen).
+- **TLS detection generalizes:** focal Cabrita-signature TLS foci are detected
+  (consistent between sections), not diffuse.
+
+Conclusion: the deconvolution reference, TLS signature, and pathway analysis
+transfer to data the pipeline was not built on. See REFERENCES.md.
