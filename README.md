@@ -178,3 +178,23 @@ Scripts: `ExternalValidation/` (`xval_c2l.py`, `xval_downstream.py`).
 
 Conclusion: the deconvolution reference, TLS signature, and pathway analysis
 transfer to data the pipeline was not built on. See REFERENCES.md.
+
+## Clinical validation — survival (TCGA-BRCA)
+
+The TLS (Cabrita 2020) and PROGENy **JAK-STAT** / **TGFβ** signatures — the axes we
+found spatially (TLS/lymphoid niche; JAK-STAT in the lymphoid niche; TGFβ in the CAF niche) —
+were projected onto **TCGA-BRCA** bulk RNA-seq (UCSC Xena; n = 1,201) and tested for
+overall survival (Cox HR per SD; KM median split). Script: `Survival/13_survival_signatures.py`.
+
+| Signature | HR per SD (95% CI) | Cox p | direction |
+|---|---|---|---|
+| TLS       | 0.89 (0.78–1.02) | 0.10  | higher → better OS (trend) |
+| JAK-STAT  | 0.88 (0.76–1.01) | 0.065 | higher → better OS (borderline) |
+| TGFβ      | 1.00 (0.87–1.16) | 0.96  | neutral |
+
+**Honest interpretation:** the immune/TLS signatures trend toward *better* survival
+(HR < 1), in the expected direction, but **none reach statistical significance** in
+TCGA-BRCA overall survival — expected, since TCGA-BRCA OS is underpowered (few death
+events, mixed subtypes). The JAK-STAT-high curve separates favorably for ~10 years
+before a small-number tail. Stronger tests: **METABRIC** (larger, longer follow-up),
+subtype-stratified (basal/TNBC), or recurrence endpoints (DFI/PFI). See REFERENCES.md.

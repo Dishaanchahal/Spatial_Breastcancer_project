@@ -47,3 +47,8 @@ Methods and biological references underpinning the analyses in this repository.
 
 ## External validation dataset
 - 10x Genomics. Human Breast Cancer (Block A, Sections 1–2), Visium Spatial Gene Expression, v1.1.0 (invasive ductal carcinoma). https://www.10xgenomics.com/resources/datasets/human-breast-cancer-block-a-section-1-1-standard-1-1-0
+
+## Clinical cohort & survival analysis
+- The Cancer Genome Atlas Network. Comprehensive molecular portraits of human breast tumours. *Nature* 2012;490:61–70. doi:10.1038/nature11412
+- Goldman MJ, Craft B, Hastie M, et al. Visualizing and interpreting cancer genomics data via the Xena platform. *Nature Biotechnology* 2020;38:675–678. doi:10.1038/s41587-020-0546-8 (data source for TCGA-BRCA HiSeqV2 + survival)
+- Davidson-Pilon C. lifelines: survival analysis in Python. *Journal of Open Source Software* 2019;4(40):1317. doi:10.21105/joss.01317
