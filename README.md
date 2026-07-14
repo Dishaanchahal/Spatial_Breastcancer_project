@@ -198,3 +198,21 @@ TCGA-BRCA overall survival — expected, since TCGA-BRCA OS is underpowered (few
 events, mixed subtypes). The JAK-STAT-high curve separates favorably for ~10 years
 before a small-number tail. Stronger tests: **METABRIC** (larger, longer follow-up),
 subtype-stratified (basal/TNBC), or recurrence endpoints (DFI/PFI). See REFERENCES.md.
+
+### Subtype-stratified survival (TCGA-BRCA)
+
+Rerun within **Basal** (PAM50; n=140, 20 events) and **TNBC** (ER-/PR-/HER2-; n=123, 19 events).
+Script: `Survival/14_survival_subtype.py`.
+
+| Subset | Signature | HR per SD | Cox p |
+|---|---|---|---|
+| TNBC  | JAK-STAT | 0.73 | 0.19 |
+| TNBC  | TLS      | 0.81 | 0.38 |
+| Basal | JAK-STAT | 0.96 | 0.85 |
+| Basal | TLS      | 0.90 | 0.63 |
+
+In **TNBC the protective effect sizes are larger** than the full cohort (JAK-STAT HR 0.73,
+TLS 0.81 vs 0.88/0.89) — directionally consistent with TME/TLS mattering more in TNBC — but
+with only ~19 death events the TNBC subset is **severely underpowered and non-significant**.
+Basal near-null. Honest conclusion: effect direction moves as hypothesized, but TCGA subtype
+subsets lack events to confirm; needs METABRIC / pooled cohorts / recurrence (DFI/PFI) endpoints.
