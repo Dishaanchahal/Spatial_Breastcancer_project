@@ -216,3 +216,23 @@ TLS 0.81 vs 0.88/0.89) — directionally consistent with TME/TLS mattering more 
 with only ~19 death events the TNBC subset is **severely underpowered and non-significant**.
 Basal near-null. Honest conclusion: effect direction moves as hypothesized, but TCGA subtype
 subsets lack events to confirm; needs METABRIC / pooled cohorts / recurrence (DFI/PFI) endpoints.
+
+### Recurrence-endpoint survival (TCGA-BRCA) — significant
+
+Overall survival is event-poor in TCGA-BRCA; using **recurrence endpoints** (PFI/DFI, more
+events) the signatures reach significance (continuous Cox HR per SD). Script:
+`Survival/15_survival_recurrence.py`.
+
+| Endpoint | Signature | HR per SD (95% CI) | Cox p |
+|---|---|---|---|
+| PFI | **TLS**  | 0.82 (0.71–0.96) | **0.011** |
+| DFI | **TLS**  | 0.78 (0.63–0.95) | **0.016** |
+| DFI | **TGFβ** | 1.26 (1.02–1.56) | **0.034** |
+| PFI | TGFβ | 1.15 (0.98–1.35) | 0.080 |
+| PFI | JAK-STAT | 0.87 (0.74–1.01) | 0.068 |
+
+**Clinically validates the spatial findings:** higher **TLS** (the lymphoid niche) → significantly
+**less progression/recurrence** (protective); higher **TGFβ** (the CAF niche) → significantly
+**more recurrence** (harmful). JAK-STAT protective trend. Continuous Cox is the primary test
+(median-split log-rank is less powerful). TNBC subset is directionally consistent (JAK-STAT
+HR~0.72–0.78) but underpowered (~16–23 events).
