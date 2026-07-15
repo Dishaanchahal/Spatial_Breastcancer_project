@@ -322,3 +322,25 @@ against an immunosuppressive TGFβ-rich CAF stroma) is consistent with establish
 21. Owen et al., 2019, *Cancers* — JAK-STAT double-edged sword. https://consensus.app/papers/details/975a232055d5529dbad86f05a78662e1/
 22. Johnson et al., 2018, *Nature Reviews Clinical Oncology* — IL-6/JAK/STAT3 in cancer. https://consensus.app/papers/details/d8f100e4e5f3561fb1ddaa03e5f95f8b/
 23. Manore et al., 2022, *Frontiers in Oncology* — IL-6/JAK/STAT3 in breast cancer metastasis. https://consensus.app/papers/details/c4d2485db99d50e0a6a67d1368aa478d/
+
+## Cell-type microenvironments (cell2location NMF co-location)
+
+NMF (6 factors) of the spot x cell-type abundance matrix recovers co-occurring cell-type
+"microenvironments" (the cell2location co-location method, Kleshchevnikov 2022).
+Script: `cell2location/17_nmf_microenvironments.py`; outputs in
+`cell2location/results/NMF_microenvironments/`.
+
+| ME | Top cell types | Interpretation |
+|----|----------------|----------------|
+| ME1 | Myeloid + T-cells | myeloid–immune interface |
+| **ME2** | **B-cells + T-cells** | **lymphoid / TLS** (spatially focal) |
+| ME3 | CAFs + Myeloid | stromal |
+| ME4 | Cancer Epithelial | tumor |
+| ME5 | Normal Epithelial | normal epithelium |
+| ME6 | Plasmablasts + T-cells | plasmablast/immune |
+
+Spatially, **ME2 (B+T) forms a single focal aggregate** (e.g. CID4465) — the TLS pinpointed as a
+co-occurring lymphoid community, method-natively. Per-sample microenvironment usage reproduces the
+cohort story: ER+ CID4290 is tumor-dominated (ME4) with almost no lymphoid ME2 (immune-cold),
+whereas TNBC CID4465 is rich in the CAF/stromal (ME3) and lymphoid/TLS (ME2) microenvironments.
+This recovers the TLS and CAF findings as co-occurring cell-type communities.
