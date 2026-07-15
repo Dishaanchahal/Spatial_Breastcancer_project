@@ -52,3 +52,8 @@ Methods and biological references underpinning the analyses in this repository.
 - The Cancer Genome Atlas Network. Comprehensive molecular portraits of human breast tumours. *Nature* 2012;490:61–70. doi:10.1038/nature11412
 - Goldman MJ, Craft B, Hastie M, et al. Visualizing and interpreting cancer genomics data via the Xena platform. *Nature Biotechnology* 2020;38:675–678. doi:10.1038/s41587-020-0546-8 (data source for TCGA-BRCA HiSeqV2 + survival)
 - Davidson-Pilon C. lifelines: survival analysis in Python. *Journal of Open Source Software* 2019;4(40):1317. doi:10.21105/joss.01317
+
+## METABRIC validation cohort
+- Curtis C, Shah SP, Chin SF, et al. The genomic and transcriptomic architecture of 2,000 breast tumours reveals novel subgroups. *Nature* 2012;486:346–352. doi:10.1038/nature10983
+- Pereira B, Chin SF, Rueda OM, et al. The somatic mutation profiles of 2,433 breast cancers refine their genomic and transcriptomic landscapes. *Nature Communications* 2016;7:11479. doi:10.1038/ncomms11479
+- METABRIC expression + clinical obtained via a public GitHub mirror of the cBioPortal `brca_metabric` study (cBioPortal datahub was unreachable at analysis time).

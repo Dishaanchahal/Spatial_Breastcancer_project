@@ -236,3 +236,25 @@ events) the signatures reach significance (continuous Cox HR per SD). Script:
 **more recurrence** (harmful). JAK-STAT protective trend. Continuous Cox is the primary test
 (median-split log-rank is less powerful). TNBC subset is directionally consistent (JAK-STAT
 HR~0.72–0.78) but underpowered (~16–23 events).
+
+### METABRIC validation (independent cohort) — TLS replicates strongly
+
+Independent, well-powered cohort (n=1,903; **1,103 death events**; OS). Script:
+`Survival/16_survival_metabric.py`.
+
+| Group | Signature | HR per SD (95% CI) | Cox p |
+|---|---|---|---|
+| ALL | **TLS** | 0.87 (0.82–0.93) | **3e-5** |
+| ALL | JAK-STAT | 1.04 (0.98–1.10) | 0.20 (ns) |
+| ALL | TGFβ | 1.05 (0.99–1.11) | 0.14 (ns) |
+
+**Cross-cohort verdict:**
+- **TLS is robustly, significantly protective** — METABRIC OS (p=3e-5) *replicates* the TCGA
+  recurrence result (PFI p=0.011, DFI p=0.016). Two independent cohorts, two endpoint types →
+  the TLS/lymphoid-niche prognostic effect is real and reproducible.
+- **JAK-STAT did NOT replicate** (METABRIC HR 1.04, ns; TCGA had only a borderline trend) —
+  not a robust prognostic signal; dropped as a claim.
+- **TGFβ** is harmful in direction in both cohorts but significant only in TCGA DFI (HR 1.26) —
+  suggestive, not confirmed.
+Subtype subsets (Basal, ER-/HER2-) show TLS in the same protective direction (HR~0.88) but are
+underpowered within-subset.
