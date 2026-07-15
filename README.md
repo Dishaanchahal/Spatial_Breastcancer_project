@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/workflow_schematic.svg" alt="Spatial_GenAI workflow schematic" width="920">
+</p>
+
 # Spatial Transcriptomics of Breast Cancer (Visium + Wu et al. 2021 reference)
 
 Cell-type deconvolution of six 10x Visium breast-cancer slides by label transfer
