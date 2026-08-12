@@ -1,0 +1,11 @@
+target,r2,spearman,auc
+Cancer Epithelial,0.017,0.293,
+T-cells,0.063,0.348,
+Myeloid,-0.136,0.228,
+CAFs,-0.363,0.028,
+Endothelial,-0.129,0.12,
+B-cells,-0.258,0.226,
+Plasmablasts,-0.637,0.105,
+PVL,-0.197,0.008,
+Normal Epithelial,-0.243,0.145,
+TLS_score,-0.168,-0.015,0.484

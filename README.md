@@ -365,3 +365,27 @@ co-occurring lymphoid community, method-natively. Per-sample microenvironment us
 cohort story: ER+ CID4290 is tumor-dominated (ME4) with almost no lymphoid ME2 (immune-cold),
 whereas TNBC CID4465 is rich in the CAF/stromal (ME3) and lymphoid/TLS (ME2) microenvironments.
 This recovers the TLS and CAF findings as co-occurring cell-type communities.
+
+## Predicting the molecular TME from H&E (pathology foundation model)
+
+Proof-of-concept for the 2025–2026 direction of reading spatial molecular features off routine
+histology. We tiled a local H&E context patch per Visium spot, embedded it with the **Phikon**
+pathology foundation model (Filiot 2023), and predicted the cell2location composition and a TLS
+signature from morphology alone. Scripts: `HE_FoundationModel/`.
+
+| Evaluation | Composition R² | TLS AUC |
+|---|---|---|
+| **Within-slide (5-fold CV)** | up to **0.75** (Cancer Epi 0.71, CAFs 0.67, T-cells 0.66) | **0.69** |
+| Across-slide (leave-one-slide-out) | mostly negative | ~0.48 (chance) |
+
+**Result:** within a slide, H&E morphology carries strong, foundation-model-readable signal for
+cell-type composition and the TLS niche — the H&E-predicted TLS map recovers the focal TLS in
+CID4465 (`HE_TLS_within_CID4465.png`). Across slides the model fails, i.e. it does not yet transfer,
+because of staining/scanner batch effects and the low resolution available here.
+
+**Honest caveats:** only the hires **thumbnail** (~8.5 px/spot) was available, far below the
+resolution pathology foundation models expect; within-slide random folds carry spatial
+autocorrelation (optimistic); and no stain normalisation was applied. The rigorous next steps are
+full-resolution H&E (e.g. the 10x `image.tif`), stain normalisation, and spatial-block
+cross-validation — after which this becomes a deployable "TLS-from-H&E" tool. Aligns with the
+emerging H&E → spatial-omics literature (Path2Space, Nicheformer). See REFERENCES.md.

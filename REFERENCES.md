@@ -57,3 +57,8 @@ Methods and biological references underpinning the analyses in this repository.
 - Curtis C, Shah SP, Chin SF, et al. The genomic and transcriptomic architecture of 2,000 breast tumours reveals novel subgroups. *Nature* 2012;486:346–352. doi:10.1038/nature10983
 - Pereira B, Chin SF, Rueda OM, et al. The somatic mutation profiles of 2,433 breast cancers refine their genomic and transcriptomic landscapes. *Nature Communications* 2016;7:11479. doi:10.1038/ncomms11479
 - METABRIC expression + clinical obtained via a public GitHub mirror of the cBioPortal `brca_metabric` study (cBioPortal datahub was unreachable at analysis time).
+
+## H&E foundation-model analysis
+- Filiot A, Ghermi R, Olivier A, et al. Scaling self-supervised learning for histopathology with masked image modeling (Phikon). *medRxiv* 2023. doi:10.1101/2023.07.21.23292757 (pathology foundation model used here)
+- Path2Space: AI-predicted spatial transcriptomics unlocks breast-cancer biomarkers from pathology. *Cell* 2026. https://www.cell.com/cell/abstract/S0092-8674(26)00458-7
+- Schaar AC, et al. Nicheformer: a foundation model for single-cell and spatial omics. *Nature Methods* 2025. https://www.nature.com/articles/s41592-025-02814-z

@@ -27,3 +27,4 @@ cell2location/results/
 .DS_Store
 __pycache__/
 *.pyc
+HE_FoundationModel/*.npz
