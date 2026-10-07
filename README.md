@@ -280,6 +280,29 @@ Future work should aim to move from association towards mechanism and from descr
 In summary, an integrated spatial analysis of breast cancer converges on a CAF–CXCL12–TLS recruitment axis operating against a TGF-β-rich stromal background — a picture that is internally reproducible, externally replicated, clinically associated with survival, and consistent with existing biology.
 
 
+## Future prospects
+
+The analyses here establish a reproducible, clinically-associated picture of the breast-cancer tumour microenvironment. Several directions would move it from a descriptive, retrospective study towards mechanism and deployable prediction.
+
+**Deployable histology-based TLS scoring.** The most immediate opportunity follows from the H&E foundation-model proof-of-concept. Within a slide, Phikon embeddings predicted cell-type composition (R² up to 0.75) and the TLS niche (AUC 0.69), but the model did not transfer across slides. Closing that gap — full-resolution whole-slide images rather than thumbnails, stain normalisation, spatial-block cross-validation, and spatial-transcriptomics-guided fine-tuning of the foundation model — would turn this into a slide-transferable "TLS-from-H&E" tool. The natural culmination, mirroring [Path2Space](https://www.cell.com/cell/fulltext/S0092-8674(26)00458-7) (Cell, 2026), is to apply such a model to the ~1,000 TCGA-BRCA diagnostic whole-slide images that have no spatial assay, score the prognostic TLS niche across the whole cohort, and re-test the survival association at scale — bridging a six-slide spatial study to a large clinical cohort using only routine histology.
+
+**From inferred to in-situ communication.** The CXCL12–CXCR4 recruitment axis was inferred from reference co-expression. Spatially-resolved communication methods (e.g. optimal-transport approaches such as COMMOT) would test whether ligand and receptor are genuinely co-located in the tissue, and neighbourhood-dependent expression models could ask how proximity to CAFs reshapes lymphocyte state.
+
+**Finer cellular resolution.** Re-deconvolving against the reference's minor cell-type labels would resolve CAF subsets (myofibroblastic versus inflammatory, e.g. CAF-S1) and T-cell states (cytotoxic, exhausted, regulatory), pinpointing which CAF subtype drives the CXCL12 signal. Copy-number inference (inferCNV, Numbat) would confirm malignant epithelium directly and resolve the "Normal Epithelial" over-call noted in the RCTD comparison.
+
+**Modern tissue-architecture and foundation models.** Multi-sample niche frameworks (CellCharter) and spatial foundation models ([Nicheformer](https://www.nature.com/articles/s41592-025-02814-z), Nature Methods, 2025) would place the niche analysis on a more rigorous, cross-sample footing and enable transfer across datasets. Higher-resolution platforms (Visium HD, Xenium) would move the "co-occurrence" observations from 55-µm spots to true single-cell colocalisation, and dedicated image-based TLS callers would formalise detection of the project's headline structure.
+
+**Translational validation.** Ultimately, the prognostic value of TLS and the detrimental role of the TGF-β/CAF stroma should be tested prospectively — with TLS evaluated as a predictive biomarker for immunotherapy and the TGF-β/CXCR4 stromal axis as a therapeutic target, both of which are in active clinical development.
+
+**Prioritised roadmap**
+
+1. Full-resolution + stain-normalised H&E → slide-transferable TLS model.
+2. Cohort-scale virtual TLS on TCGA whole-slide images → survival at scale.
+3. Spatially-resolved cell–cell communication (COMMOT) to confirm CXCL12–CXCR4 in situ.
+4. Finer CAF/T-cell subsets + copy-number-based malignant confirmation.
+5. Prospective/translational testing of TLS (predictive) and TGF-β/CXCR4 (therapeutic).
+
+
 ## Literature verification of findings
 
 Each principal finding was checked against the peer-reviewed literature (searches via
